@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+  <title>Canvas Test</title>
+  <link rel='stylesheet' href='canvas-style.css' />
+</head>
+
+<body onkeyup='keyUp(event);'>
+  <video id="game-background" src='HellHowl.mp4' autoplay muted loop></video>
+  <canvas
+    id='game-board'
+    onmousedown='mouseDown(event);'
+    onmouseup='mouseUp(event);'
+    onmousemove='mouseMove(event);'
+   ></canvas>
+  <script src='canvas-script.js'></script>
+</body>
+</html>

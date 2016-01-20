@@ -1,0 +1,7 @@
+#game-board {
+  border: 1px #999 solid;
+}
+
+#game-background {
+  display: none;
+}
