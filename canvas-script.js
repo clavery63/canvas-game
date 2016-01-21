@@ -71,7 +71,6 @@ function calculatePixelsMatched(mergedPuzzlePixels, mergedUserPixels) {
   for (var i = 0; i < mergedPuzzlePixels.length; i++) {
     for (var j = 0; j < mergedUserPixels.length; j++){
       if (mergedPuzzlePixels[i] == mergedUserPixels[j]) {
-        debugger;
         pixelsMatched++;
         break;
       }
