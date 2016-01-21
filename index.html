@@ -5,13 +5,16 @@
 </head>
 
 <body onkeyup='keyUp(event);'>
-  <video id="game-background" src='HellHowl.mp4' autoplay muted loop></video>
+  <video id="game-background" src='HellHowl.mp4' autoplay loop></video>
+  <!-- <img id="game-background" src='jerry-seinfeld.jpg'></img> -->
   <canvas
     id='game-board'
     onmousedown='mouseDown(event);'
     onmouseup='mouseUp(event);'
     onmousemove='mouseMove(event);'
    ></canvas>
+   <div class='info-bar'>Jerry Percentage: <span id='jerry-percentage'></span>%</div>
+  <script src='jerry.js'></script>
   <script src='canvas-script.js'></script>
 </body>
 </html>
