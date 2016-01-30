@@ -10,6 +10,7 @@ var boundingRect = gameBoard.getBoundingClientRect();
 var percentComplete = 0;
 var pixelsMatched = 0;
 var puzzlePixels = jerry;
+var searchablePuzzlePixels = makeSearchable(jerry);
 var userPixels = [];
 var undoneUserPixels = [];
 var drawing = false;
@@ -20,12 +21,8 @@ var ctx = gameBoard.getContext('2d');
 
 ctx.fillStyle = '#009999';
 
-function pushPixel(e) {
-  var x = e.clientX;
-  var y = e.clientY;
-  userPixels[userPixels.length - 1].push(y * GAME_BOARD_WIDTH + x);
-  percentComplete = calculatePercentComplete();
-}
+
+// Drawing methods
 
 function drawPixelSet(pixelSet) {
   ctx.beginPath();
@@ -65,26 +62,45 @@ function updateDOM() {
   percentageSpan.textContent = percentComplete;
 }
 
-function calculatePixelsMatched(mergedPuzzlePixels, mergedUserPixels) {
+
+// Misc.
+
+function calculatePixelsMatched(puzzle, user) {
   pixelsMatched = 0;
 
-  for (var i = 0; i < mergedPuzzlePixels.length; i++) {
-    for (var j = 0; j < mergedUserPixels.length; j++){
-      if (mergedPuzzlePixels[i] == mergedUserPixels[j]) {
-        pixelsMatched++;
-        break;
-      }
+
+  for (var i = 0; i < user.length; i++){
+    if (puzzle.binarySearch(user[i]) !== -1) {
+      pixelsMatched++;
     }
   }
   return pixelsMatched;
 }
 
 function calculatePercentComplete() {
-  var mPP = [].concat.apply([], puzzlePixels);
   var mUP = [].concat.apply([], userPixels);
-  var ratio = (calculatePixelsMatched(mPP, mUP) / mPP.length);
+  var matched = calculatePixelsMatched(searchablePuzzlePixels, mUP);
+  var ratio = (matched / searchablePuzzlePixels.length);
   return (Math.round(ratio * 10000) / 100);
 }
+
+function pushPixel(e) {
+  var x = e.clientX;
+  var y = e.clientY;
+  userPixels[userPixels.length - 1].push(y * GAME_BOARD_WIDTH + x);
+  percentComplete = calculatePercentComplete();
+}
+
+function makeSearchable(arr) {
+  var reduced = [].concat.apply([], arr);
+  var sorted = reduced.sort(function(a, b) { return a - b });
+  var unique = [];
+  for (var i = 0; i < sorted.length; i++) {
+    if (sorted[i] !== sorted[i - 1]) { unique.push(sorted[i]); }
+  };
+  return unique;
+}
+
 
 // Main Game Loop
 
@@ -94,6 +110,7 @@ function gameLoop() {
 
   window.requestAnimationFrame(gameLoop);
 }
+
 
 // Trigger Game Loop
 
@@ -140,4 +157,27 @@ function keyUp(e) {
   if (e.ctrlKey == true && e.keyCode == 89 && undoneUserPixels.length) {
     userPixels.push(undoneUserPixels.pop());
   }
+}
+
+
+// Overrides
+
+Array.prototype.binarySearch = function(needle) {
+  var min = 0;
+  var max = this.length - 1;
+  var currentIndex;
+  var currentValue;
+
+  while (min <= max) {
+    currentIndex = (min + max) / 2 | 0;
+    currentValue = this[currentIndex];
+    if (needle === currentValue) { return currentIndex; }
+
+    if (needle < this[currentIndex]) {
+      max = currentIndex - 1;
+    } else {
+      min = currentIndex + 1;
+    }
+  }
+  return -1;
 }
