@@ -14,12 +14,11 @@ var searchablePuzzlePixels = makeSearchable(jerry);
 var userPixels = [];
 var undoneUserPixels = [];
 var drawing = false;
+var iWon = false;
 var passwordProgress = 0;
 var password = [73, 77, 32, 71, 65, 89];
 
 var ctx = gameBoard.getContext('2d');
-
-ctx.fillStyle = '#009999';
 
 
 // Drawing methods
@@ -60,6 +59,13 @@ function draw() {
 function updateDOM() {
   percentageSpan = document.getElementById('jerry-percentage');
   percentageSpan.textContent = percentComplete;
+
+  if (percentComplete > 2.0 && iWon === false) {
+    iWon = true;
+    gameBackground.src = "GOOD.mp4";
+    gameBackground.loop = false;
+    puzzlePixels = [];
+  }
 }
 
 
@@ -67,7 +73,6 @@ function updateDOM() {
 
 function calculatePixelsMatched(puzzle, user) {
   pixelsMatched = 0;
-
 
   for (var i = 0; i < user.length; i++){
     if (puzzle.binarySearch(user[i]) !== -1) {
