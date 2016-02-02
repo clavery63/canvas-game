@@ -9,8 +9,8 @@ var boundingRect = gameBoard.getBoundingClientRect();
 
 var percentComplete = 0;
 var pixelsMatched = 0;
-var puzzlePixels = dan;
-var searchablePuzzlePixels = makeSearchable(dan);
+var puzzlePixels = toil;
+var searchablePuzzlePixels = makeSearchable(toil);
 var userPixels = [];
 var undoneUserPixels = [];
 var drawing = false;
@@ -60,11 +60,12 @@ function updateDOM() {
   percentageSpan = document.getElementById('jerry-percentage');
   percentageSpan.textContent = percentComplete;
 
-  if (percentComplete > 20.0 && iWon === false) {
+  if (percentComplete > 12.0 && iWon === false) {
     iWon = true;
-    gameBackground.src = "https://db.tt/bsviHTYm";
+    gameBackground.src = "https://db.tt/fslL3Q98";
     gameBackground.loop = true;
     puzzlePixels = [];
+    userPixels = []
     
   }
 }
