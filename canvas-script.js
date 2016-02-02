@@ -60,11 +60,12 @@ function updateDOM() {
   percentageSpan = document.getElementById('jerry-percentage');
   percentageSpan.textContent = percentComplete;
 
-  if (percentComplete > 10.0 && iWon === false) {
+  if (percentComplete > 20.0 && iWon === false) {
     iWon = true;
     gameBackground.src = "https://db.tt/bsviHTYm";
     gameBackground.loop = true;
     puzzlePixels = [];
+    
   }
 }
 
