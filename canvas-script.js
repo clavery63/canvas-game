@@ -62,7 +62,7 @@ function updateDOM() {
 
   if (percentComplete > 2.0 && iWon === false) {
     iWon = true;
-    gameBackground.src = "GOOD.mp4";
+    gameBackground.src = "https://db.tt/iPCFWzsL";
     gameBackground.loop = false;
     puzzlePixels = [];
   }
