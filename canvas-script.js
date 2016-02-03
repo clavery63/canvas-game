@@ -1,16 +1,23 @@
 var BOARD_WIDTH = 600;
 var BOARD_HEIGHT = 420;
 
+var level = 1;
 var gameBoard = document.getElementById('game-board');
-var gameBackground = document.getElementById('game-background');
 gameBoard.width = BOARD_WIDTH;
 gameBoard.height = BOARD_HEIGHT;
+
+var gameBackground = document.getElementById('game-background');
+gameBackground.src = levelData[level - 1].bad;
+
+var heroSpan = document.getElementById('hero-name');
+heroSpan.textContent = levelData[level - 1].heroName;
+
 var boundingRect = gameBoard.getBoundingClientRect();
 
 var percentComplete = 0;
 var pixelsMatched = 0;
-var puzzlePixels = jerry;
-var searchablePuzzlePixels = makeSearchable(jerry);
+var puzzlePixels = levelData[level - 1].puzzle;
+var searchablePuzzlePixels = makeSearchable(levelData[level - 1].puzzle);
 var userPixels = [];
 var undoneUserPixels = [];
 var drawing = false;
@@ -57,12 +64,12 @@ function draw() {
 }
 
 function updateDOM() {
-  percentageSpan = document.getElementById('jerry-percentage');
+  var percentageSpan = document.getElementById('percentage');
   percentageSpan.textContent = percentComplete;
 
   if (percentComplete > 5.0 && iWon === false) {
     iWon = true;
-    gameBackground.src = "https://db.tt/iPCFWzsL";
+    gameBackground.src = levelData[level - 1].good;
     gameBackground.loop = false;
     puzzlePixels = [];
   }
