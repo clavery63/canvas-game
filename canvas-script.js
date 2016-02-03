@@ -1,31 +1,22 @@
 var BOARD_WIDTH = 600;
 var BOARD_HEIGHT = 420;
 
-var level = 1;
+var gameBackground = document.getElementById('game-background');
+var heroSpan = document.getElementById('hero-name');
 var gameBoard = document.getElementById('game-board');
+var boundingRect = gameBoard.getBoundingClientRect();
+
 gameBoard.width = BOARD_WIDTH;
 gameBoard.height = BOARD_HEIGHT;
 
-var gameBackground = document.getElementById('game-background');
-gameBackground.src = levelData[level - 1].bad;
-
-var heroSpan = document.getElementById('hero-name');
-heroSpan.textContent = levelData[level - 1].heroName;
-
-var boundingRect = gameBoard.getBoundingClientRect();
-
-var percentComplete = 0;
-var pixelsMatched = 0;
-var puzzlePixels = levelData[level - 1].puzzle;
-var searchablePuzzlePixels = makeSearchable(levelData[level - 1].puzzle);
-var userPixels = [];
-var undoneUserPixels = [];
 var drawing = false;
-var iWon = false;
 var passwordProgress = 0;
 var password = [73, 77, 32, 71, 65, 89];
-
 var ctx = gameBoard.getContext('2d');
+var level = 1;
+
+var percentComplete, pixelsMatched, puzzlePixels, eb,
+searchablePuzzlePixels, userPixels, undoneUserPixels, iWon
 
 
 // Drawing methods
@@ -67,11 +58,17 @@ function updateDOM() {
   var percentageSpan = document.getElementById('percentage');
   percentageSpan.textContent = percentComplete;
 
-  if (percentComplete > 5.0 && iWon === false) {
+  var percentRequired = levelData[level - 1].percent || 1.0;
+
+  if (percentComplete > percentRequired && iWon === false) {
     iWon = true;
     gameBackground.src = levelData[level - 1].good;
     gameBackground.loop = false;
     puzzlePixels = [];
+    setTimeout(function() {
+      // setTimeout for now.  Later we'll listen for when the video stops
+      loadLevel(++level);
+    }, 7000);
   }
 }
 
@@ -108,6 +105,34 @@ function makeSearchable(arr) {
   return unique;
 }
 
+function loadLevel(level) {
+  if (level > levelData.length) { window.location = eb; }
+  heroSpan.textContent = levelData[level - 1].heroName;
+  gameBackground.src = levelData[level - 1].bad;
+  gameBackground.loop = true;
+  percentComplete = 0;
+  pixelsMatched = 0;
+  puzzlePixels = levelData[level - 1].puzzle;
+  searchablePuzzlePixels = makeSearchable(levelData[level - 1].puzzle);
+  userPixels = [];
+  undoneUserPixels = [];
+  iWon = false;
+}
+
+function doSomething() {
+  var a = eb = "";
+  var b = [
+    10431, 16311, 63112, 35834, 73473, 11931, 19311, 93463, 10139, 83973,
+    1173, 109311, 53119, 31113, 1143, 1083100, 3463, 99311, 13109, 347
+  ];
+
+  for (var i = 0; i < b.length; i++) { a = a.concat(b[i].toString()); }
+
+  var c = a.split(3);
+
+  for (var i = 0; i < c.length; i++) { eb = eb.concat(String.fromCharCode(c[i])); }
+}
+
 
 // Main Game Loop
 
@@ -117,11 +142,6 @@ function gameLoop() {
 
   window.requestAnimationFrame(gameLoop);
 }
-
-
-// Trigger Game Loop
-
-window.requestAnimationFrame(gameLoop);
 
 
 // Event Handlers
@@ -188,3 +208,10 @@ Array.prototype.binarySearch = function(needle) {
   }
   return -1;
 }
+
+
+// Trigger Game Loop
+
+doSomething();
+loadLevel(1);
+window.requestAnimationFrame(gameLoop);

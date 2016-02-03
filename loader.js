@@ -1,7 +1,7 @@
 var levelData = [];
 
 (function() {
-  var NUM_LEVELS = 1;
+  var NUM_LEVELS = 2;
   for (var i = 1; i <= NUM_LEVELS; i++) {
     var scriptTag = document.createElement('script');
     scriptTag.src = "levels/" + i + ".js";
