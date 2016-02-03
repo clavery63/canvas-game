@@ -1,10 +1,10 @@
-var GAME_BOARD_WIDTH = 600;
-var GAME_BOARD_HEIGHT = 420;
+var BOARD_WIDTH = 600;
+var BOARD_HEIGHT = 420;
 
 var gameBoard = document.getElementById('game-board');
 var gameBackground = document.getElementById('game-background');
-gameBoard.width = GAME_BOARD_WIDTH;
-gameBoard.height = GAME_BOARD_HEIGHT;
+gameBoard.width = BOARD_WIDTH;
+gameBoard.height = BOARD_HEIGHT;
 var boundingRect = gameBoard.getBoundingClientRect();
 
 var percentComplete = 0;
@@ -26,8 +26,8 @@ var ctx = gameBoard.getContext('2d');
 function drawPixelSet(pixelSet) {
   ctx.beginPath();
   for (var j = 0; j < pixelSet.length; j++) {
-    var x = (pixelSet[j] % GAME_BOARD_WIDTH) - boundingRect.top - 1;
-    var y = Math.floor((pixelSet[j] / GAME_BOARD_WIDTH) - boundingRect.left - 1);
+    var x = (pixelSet[j] % BOARD_WIDTH) - boundingRect.top - 1;
+    var y = Math.floor((pixelSet[j] / BOARD_WIDTH) - boundingRect.left - 1);
     if (j == 0) ctx.moveTo(x, y);
     ctx.lineTo(x, y);
   }
@@ -36,7 +36,7 @@ function drawPixelSet(pixelSet) {
 
 function draw() {
   ctx.fillStyle = '#ffffff';
-  ctx.rect(0, 0, GAME_BOARD_WIDTH, GAME_BOARD_HEIGHT);
+  ctx.rect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
   ctx.fill();
   ctx.drawImage(gameBackground, 0, 0);
 
@@ -60,7 +60,7 @@ function updateDOM() {
   percentageSpan = document.getElementById('jerry-percentage');
   percentageSpan.textContent = percentComplete;
 
-  if (percentComplete > 2.0 && iWon === false) {
+  if (percentComplete > 5.0 && iWon === false) {
     iWon = true;
     gameBackground.src = "https://db.tt/iPCFWzsL";
     gameBackground.loop = false;
@@ -71,28 +71,23 @@ function updateDOM() {
 
 // Misc.
 
-function calculatePixelsMatched(puzzle, user) {
-  pixelsMatched = 0;
-
-  for (var i = 0; i < user.length; i++){
-    if (puzzle.binarySearch(user[i]) !== -1) {
-      pixelsMatched++;
-    }
+function determineHit(pixel) {
+  if (searchablePuzzlePixels.binarySearch(pixel) !== -1) {
+    pixelsMatched++;
   }
-  return pixelsMatched;
 }
 
 function calculatePercentComplete() {
-  var mUP = [].concat.apply([], userPixels);
-  var matched = calculatePixelsMatched(searchablePuzzlePixels, mUP);
-  var ratio = (matched / searchablePuzzlePixels.length);
+  var ratio = (pixelsMatched / searchablePuzzlePixels.length);
   return (Math.round(ratio * 10000) / 100);
 }
 
 function pushPixel(e) {
   var x = e.clientX;
   var y = e.clientY;
-  userPixels[userPixels.length - 1].push(y * GAME_BOARD_WIDTH + x);
+  var pixel = y * BOARD_WIDTH + x;
+  userPixels[userPixels.length - 1].push(pixel);
+  determineHit(pixel)
   percentComplete = calculatePercentComplete();
 }
 
