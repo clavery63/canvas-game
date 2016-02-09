@@ -1,0 +1,22 @@
+{
+  "name": "canvas-test",
+  "version": "4.2.4",
+  "description": "Express server for classic tracing game",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clavery63/canvas-game.git"
+  },
+  "author": "Chris Lavery",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/clavery63/canvas-game/issues"
+  },
+  "homepage": "https://github.com/clavery63/canvas-game#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
